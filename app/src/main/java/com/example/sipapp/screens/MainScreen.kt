@@ -4,14 +4,19 @@ import PieChart
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.MonetizationOn
+import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Percent
 import androidx.compose.material.icons.filled.Schedule
@@ -68,6 +73,7 @@ fun MainScreen(
             Icons.Filled.AttachMoney,
             viewModel.amountSliderValue.value,
             valueRange = 500f..100000f,
+//            step = 500,
             sliderValueOnChange = { viewModel.updateAmountSliderValue(it) },
             onValueChange = { viewModel.updateAmountPerMonth(it) }
         )
@@ -77,6 +83,7 @@ fun MainScreen(
             Icons.Filled.Percent,
             viewModel.interestSliderValue.value,
             valueRange = 1f..30f,
+//            step = 1,
             sliderValueOnChange = { viewModel.updateInterestSliderValue(it) },
             onValueChange = { viewModel.updateInterest(it) }
         )
@@ -85,6 +92,7 @@ fun MainScreen(
             viewModel.timePeriod.value,
             Icons.Filled.Schedule,
             viewModel.timeSliderValue.value,
+//            step = 1,
             valueRange = 1f..50f,
             sliderValueOnChange = { viewModel.updateTimeSliderValue(it) },
             onValueChange = { viewModel.updateTimePeriod(it) }
@@ -99,6 +107,7 @@ fun MainScreen(
         TextCmp("Invested amount: ", formatter.format(investedAmount))
         TextCmp("Est. returns:", formatter.format(interestAmount))
         TextCmp("Total value:", formatter.format(totalAmount))
+//        Spacer(modifier = Modifier.height(2.dp))
         PieChart(investedAmount.toFloat(), interestAmount.toFloat())
 //        Col("Expected Return", viewModel)
 //        Col("Time Period", viewModel)s
@@ -115,7 +124,7 @@ fun TextCmp(label: String, value: String, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = label, fontSize = 18.sp)
-        Text(text = value, fontSize = 20.sp)
+        Text(text = "₹$value", fontSize = 20.sp)
     }
 }
 
@@ -135,11 +144,13 @@ fun Col(
     value: String,
     iconImage: ImageVector,
     sliderValue: Float,
+//    step:Int,
     valueRange: ClosedFloatingPointRange<Float>,
     sliderValueOnChange: (Float) -> Unit,
     onValueChange: (String) -> Unit,
 ) {
     val focus = LocalFocusManager.current
+//    val steps = ((valueRange.endInclusive - valueRange.start) / step - 1).toInt()
     Column(
         modifier = Modifier.padding(4.dp)
     ) {
@@ -168,6 +179,7 @@ fun Col(
             value = sliderValue,
             onValueChange = sliderValueOnChange,
             valueRange = valueRange,
+//            steps = steps
         )
     }
 }
